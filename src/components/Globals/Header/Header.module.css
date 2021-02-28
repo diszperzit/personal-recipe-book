@@ -1,0 +1,8 @@
+.Header {
+    grid-area: 1/1/2/2;
+    background-color: #b90000;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    line-height: 5rem;
+}

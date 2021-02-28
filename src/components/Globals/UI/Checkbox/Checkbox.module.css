@@ -1,0 +1,60 @@
+.CheckboxWrapper {
+    width: 80%;
+    height: 4rem;
+    margin: 0 auto;
+    align-self: center;
+    justify-content: start;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+    background-color: #fff;
+    box-shadow: 1px 1px 2px #000;
+}
+.CheckboxWrapper:hover {
+    transform: scale(1.05);
+}
+.CheckboxWrapper.active .Label {
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.CheckboxWrapper .Label {
+    font-family: 'Reggae One';
+    color: #000;
+    line-height: 4rem;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.breakfast.active {
+    background-color: #ff8c00;
+}
+.soup.active {
+    background-color: #0078da;
+}
+.salad.active {
+    background-color: #00b400;
+}
+.maindish.active {
+    background-color: #ff0000;
+}
+.dessert.active {
+    background-color: #d800d8;
+}
+
+@media (max-width: 1024px) {
+    .CheckboxWrapper {
+        width: 100%;
+    }
+    .CheckboxWrapper:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .CheckboxWrapper .Label {
+        font-size: 1.3rem;
+    }
+}

@@ -1,0 +1,73 @@
+.RecipeDifficultyBar {
+    border-radius: 2rem;
+    padding: 0.2rem 1rem;
+    text-transform: uppercase;
+    font-family: 'Reggae One';
+    color: transparent;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.RecipeDifficultyBar:nth-child(1) {
+    background: rgb(13, 130, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(13, 130, 0, 1) 0%,
+        rgba(1, 224, 0, 1) 100%
+    );
+}
+.RecipeDifficultyBar:nth-child(2) {
+    background: rgb(1, 224, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(1, 224, 0, 1) 0%,
+        rgba(228, 255, 0, 1) 100%
+    );
+}
+.RecipeDifficultyBar:nth-child(3) {
+    background: rgb(228, 255, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(228, 255, 0, 1) 0%,
+        rgba(255, 222, 0, 1) 100%
+    );
+}
+.RecipeDifficultyBar:nth-child(4) {
+    background: rgb(255, 222, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 222, 0, 1) 0%,
+        rgba(255, 65, 0, 1) 100%
+    );
+}
+.RecipeDifficultyBar:nth-child(5) {
+    background: rgb(255, 65, 0);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 65, 0, 1) 0%,
+        rgba(195, 0, 0, 1) 100%
+    );
+}
+
+.RecipeDifficultyBar:not(.Filled) {
+    background: rgb(0 0 0 / 20%);
+}
+
+.RecipeDifficultyBar.Exact {
+    text-shadow: 2px 2px 2px #000;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    .RecipeDifficultyBar {
+        font-size: 1.4rem;
+    }
+}
+@media (max-width: 480px) {
+    .RecipeDifficultyBar:not(.Exact) {
+        display: none;
+    }
+    .RecipeDifficultyBar {
+        width: 100%;
+    }
+}

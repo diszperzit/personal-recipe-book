@@ -1,0 +1,22 @@
+{
+  "name": "100 Recipes To Save Your Stomach",
+  "short_name": "Personal Recipes",
+  "description" : "A personal recipe book to keep count of all the foods one has mastered to cook.",
+  "author": "Dániel Tanyi",
+  "developer": {
+    "name": "Dániel Tanyi"
+  },
+  "version": "1.0",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#b90000",
+  "background_color": "#f5f7b6",
+  "manifest_version": 2
+}

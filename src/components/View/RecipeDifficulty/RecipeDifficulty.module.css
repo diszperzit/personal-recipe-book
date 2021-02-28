@@ -1,0 +1,23 @@
+.RecipeDifficulty {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 0.1rem;
+}
+
+.RecipeDifficultyLine {
+    text-align: center;
+    margin: 1rem 0;
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+@media (max-width: 480px) {
+    .RecipeDifficulty {
+        grid-template-columns: 1fr;
+    }
+    .RecipeDifficultyLine {
+        font-size: 1.6rem;
+    }
+}

@@ -1,0 +1,37 @@
+.RecipeIngredient {
+    display: grid;
+    grid-template-columns: max-content 1fr 8rem;
+    align-items: center;
+    grid-gap: 2rem;
+    margin: 1px;
+    padding: 0 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 1rem;
+}
+
+.RecipeIngredient svg {
+    height: 2.8rem;
+    width: 2.8rem;
+}
+
+.RecipeIngredientQy {
+    font-size: 1.5rem;
+}
+
+.RecipeIngredientName {
+    justify-self: baseline;
+    font-family: 'Reggae One';
+}
+
+@media (max-width: 1024px) {
+    .RecipeIngredient {
+        grid-template-columns: max-content 1fr 6rem;
+        grid-gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .RecipeIngredient {
+        font-size: 1.4rem;
+    }
+}

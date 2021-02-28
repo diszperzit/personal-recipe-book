@@ -1,0 +1,141 @@
+.RecipeViewerContainer {
+    display: block;
+}
+
+.Recipe {
+    display: grid;
+    width: 90vw;
+    height: calc(100vh - 17rem);
+    align-content: center;
+    justify-content: center;
+    margin: 0 auto;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, calc(50vh - 8.5rem));
+    grid-column-gap: 2rem;
+    position: relative;
+    background-color: #f5f7b6;
+    box-shadow: 2px 1px 15px #000;
+}
+
+.Recipe .RecipeBox {
+    padding: 1rem 2rem;
+    grid-template-rows: repeat(3, min-content);
+    grid-row: 1/2;
+    grid-column: 1/4;
+    display: grid;
+    grid-row-gap: 0.8rem;
+}
+.Recipe .RecipeBox ::-webkit-scrollbar-thumb {
+    background-color: #1baf1b;
+}
+
+.Recipe .RecipeBox .RecipeTitleBar {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+}
+
+.Recipe .RecipeBox .RecipeTitleBar .RecipeTitle {
+    font-family: 'Reggae One', sans-serif;
+    color: #b90000;
+    text-shadow: 2px 2px 1px rgb(0 0 0 / 25%);
+}
+.Recipe .RecipeBox .RecipeTitleBar .RecipeEditButton {
+    text-align: center;
+}
+
+.Recipe .RecipeSummaryWrapper {
+    padding: 1rem 2rem;
+    grid-row: 2/3;
+    grid-column: 1/4;
+}
+.Recipe .RecipeSummaryWrapper ::-webkit-scrollbar-thumb {
+    background-color: #0078da;
+}
+
+.Recipe .RecipeImageMain {
+    grid-row: 1/2;
+    grid-column: 4/6;
+}
+.Recipe .RecipeImageSecondary {
+    grid-row: 2/3;
+    grid-column: 4/6;
+}
+.Recipe .RecipeImageMain,
+.Recipe .RecipeImageSecondary {
+    position: relative;
+}
+
+.RecipeCTAs {
+    position: fixed;
+    bottom: 3.5rem;
+    width: 75vw;
+    left: 12.5vw;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1367px) {
+    .Recipe {
+        grid-template-columns: repeat(3, 1.2fr) repeat(2, 1fr);
+    }
+}
+@media (max-width: 1024px) {
+    .Recipe {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, max-content);
+        height: calc(100vh - 16rem);
+        width: 95vw;
+        overflow-y: auto;
+        align-content: stretch;
+        grid-column-gap: 0;
+    }
+    .Recipe .RecipeBox {
+        grid-row: 2/3;
+        grid-column: 1/3;
+    }
+    .Recipe .RecipeImageMain {
+        grid-row: 1/2;
+        grid-column: 1/2;
+    }
+    .Recipe .RecipeImageSecondary {
+        grid-row: 1/2;
+        grid-column: 2/3;
+    }
+    .Recipe .RecipeSummaryWrapper {
+        grid-row: 3/4;
+        grid-column: 1/3;
+        overflow: hidden;
+    }
+    .Recipe .RecipeImageMain,
+    .Recipe .RecipeImageSecondary {
+        position: unset;
+    }
+    .RecipeCTAs {
+        left: 2.5vw;
+        width: 95vw;
+    }
+}
+@media (max-width: 768px) {
+    .Recipe {
+        width: 95vw;
+        height: calc(100vh - 15rem);
+    }
+}
+@media (max-width: 600px) {
+    .RecipeIngredient_RecipeIngredient__18tb4 {
+        grid-template-columns: min-content 1fr 6rem;
+        grid-gap: 0.5rem;
+        margin: 1px 0;
+        padding: 0 0.2rem;
+    }
+    .Recipe .RecipeBox .RecipeTitleBar {
+        grid-template-rows: repeat(2, max-content);
+        grid-template-columns: 1fr;
+    }
+    .Recipe .RecipeBox,
+    .Recipe .RecipeSummaryWrapper {
+        padding: 0.5rem 1rem;
+    }
+}

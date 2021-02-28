@@ -1,0 +1,24 @@
+.RecipeTime {
+    justify-self: end;
+    font-family: 'Reggae One';
+    display: flex;
+    align-items: center;
+}
+
+.RecipeTime img {
+    position: relative;
+    top: -1px;
+    right: 5px;
+}
+
+.RecipeTime svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 0.5rem 0 0;
+}
+
+@media (max-width: 600px) {
+    .RecipeTime {
+        justify-self: start;
+    }
+}

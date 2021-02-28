@@ -1,0 +1,15 @@
+.Content {
+    padding: 3rem 0;
+    position: relative;
+}
+@media (max-width: 1367px) {
+    .Content {
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .Content {
+        padding: 1.5rem 0;
+    }
+}

@@ -1,0 +1,40 @@
+.Route-enter,
+.Route-exit {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.Route-enter {
+    opacity: 0;
+}
+
+.Route-enter-active {
+    opacity: 1;
+}
+
+.Route-exit {
+    opacity: 1;
+}
+
+.Route-exit-active {
+    opacity: 0;
+    position: absolute;
+    top: 3rem;
+    left: 5vw;
+}
+
+@media (max-width: 1367px) {
+    .Route-exit-active {
+        top: 2rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .Route-exit-active {
+        left: 2.5vw;
+    }
+}
+@media (max-width: 768px) {
+    .Route-exit-active {
+        top: 1.5rem;
+    }
+}

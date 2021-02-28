@@ -1,0 +1,30 @@
+.RecipeSwitcher {
+    height: 8rem;
+    width: 8rem;
+    background-color: #b90000;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.1s ease-out;
+    clip-path: polygon(0 50%, 100% 50%, 50% 0);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.1s ease-out;
+}
+
+.RecipeSwitcher:hover {
+    height: 10rem;
+    width: 10rem;
+}
+
+.Disabled {
+    display: none;
+}
+
+.left {
+    transform: rotate(-90deg);
+    left: 2.5rem;
+}
+.right {
+    transform: rotate(90deg);
+    right: 2.5rem;
+}

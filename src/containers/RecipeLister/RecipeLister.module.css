@@ -1,0 +1,168 @@
+.RecipeListContainer {
+    display: block;
+}
+
+.RecipeList {
+    display: grid;
+    width: 90vw;
+    height: calc(100vh - 17rem);
+    grid-template-columns: 20vw 1fr;
+    margin: 0 auto;
+    box-shadow: 2px 1px 15px #000;
+}
+.RecipeList.FiltersHidden {
+    grid-template-rows: unset;
+}
+
+.RecipeList .RecipeListError {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.RecipeList .Recipes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #ececec;
+    position: relative;
+    grid-auto-rows: min-content;
+}
+
+.RecipeList .RecipePrevious {
+    grid-column: 1/2;
+}
+.RecipeList .RecipeNext {
+    grid-column: 3/4;
+}
+.RecipeList .RecipePrevious,
+.RecipeList .RecipeNext {
+    align-self: center;
+    justify-self: center;
+}
+
+.RecipeList .ListElementEnterActive {
+    opacity: 1;
+}
+.RecipeList .ListElementEnterDone {
+    opacity: 1;
+}
+.RecipeList .ListElementExitActive {
+    opacity: 0;
+}
+.RecipeList .ListElementExitDone {
+    opacity: 0;
+}
+
+.RecipeList .RecipeListControls {
+    display: grid;
+    background-color: #f5f7b6;
+    box-shadow: 1px 1px 15px #000;
+    grid-template-rows: 5rem max-content min-content 1fr;
+    text-align: center;
+}
+.RecipeList.FiltersHidden .RecipeListControls {
+    display: none;
+}
+
+.RecipeList .RecipeListTitle {
+    background-color: #e20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.RecipeList .RecipeListTitle h3 {
+    color: #fff;
+    text-shadow: 1px 1px 3px #000;
+}
+
+.RecipeList .RecipeListButtons {
+    display: grid;
+    grid-auto-rows: 4rem;
+    grid-gap: 1rem;
+    padding: 2rem 0 0;
+}
+
+.RecipeList .RecipeListSearch {
+    margin: 3rem 0;
+}
+
+.RecipeListCTAs {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    text-align: center;
+    position: fixed;
+    bottom: 3.5rem;
+    width: 75vw;
+    left: 12.5vw;
+    height: auto;
+    margin: 0 auto;
+    flex-direction: row;
+}
+
+@media (max-width: 1367px) {
+    .RecipeList .Recipes {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .RecipeList {
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content 1fr;
+        height: calc(100vh - 16rem);
+        width: 95vw;
+    }
+    .RecipeList .Recipes {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .RecipeList .RecipeListButtons {
+        grid-auto-flow: column;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 0;
+        padding: 0;
+    }
+
+    .RecipeList .RecipeListControls {
+        grid-template-rows: 5rem max-content min-content;
+    }
+
+    .RecipeList .RecipeListSearch {
+        margin: 1.5rem 0 1.2rem;
+    }
+    .RecipeListCTAs {
+        left: 2.5vw;
+        width: 95vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .RecipeList {
+        height: calc(100vh - 15rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .RecipeList .Recipes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .RecipeList .RecipeListError {
+        width: 90%;
+        left: 5%;
+        transform: translateY(-50%);
+    }
+}
+@media (max-width: 360px) {
+    .RecipeList .Recipes {
+        grid-template-columns: 1fr;
+    }
+}

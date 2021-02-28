@@ -1,0 +1,172 @@
+.RecipeEditorContainer {
+    display: block;
+}
+
+.RecipeEditor {
+    display: grid;
+    width: 90vw;
+    height: calc(100vh - 17rem);
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+    box-shadow: 2px 1px 15px #000;
+}
+
+.RecipeEditor .Basics,
+.RecipeEditor .Ingredients,
+.RecipeEditor .Steps {
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+    grid-template-columns: 100%;
+    overflow: auto;
+}
+.RecipeEditor .Basics {
+    grid-row: 1/2;
+    grid-column: 1/2;
+}
+.RecipeEditor .Ingredients {
+    grid-row: 1/2;
+    grid-column: 2/3;
+    overflow-y: hidden;
+}
+.RecipeEditor .Steps {
+    grid-row: 1/2;
+    grid-column: 3/4;
+    overflow-y: hidden;
+}
+
+.RecipeEditor .Basics h3,
+.RecipeEditor .Ingredients h3,
+.RecipeEditor .Steps h3 {
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.RecipeEditor .BasicsInputs,
+.RecipeEditor .IngredientsInputs,
+.RecipeEditor .StepsInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    overflow-y: auto;
+}
+.RecipeEditor .BasicsInputs {
+    background-color: #ffeeb8;
+}
+.RecipeEditor .IngredientsInputs {
+    background-color: #c1e8b0;
+}
+.RecipeEditor .StepsInputs {
+    background-color: #b6d4f7;
+}
+
+.RecipeEditor .Basics h3,
+.RecipeEditor .Basics ::-webkit-scrollbar-thumb {
+    background-color: #ec8d09;
+}
+.RecipeEditor .Ingredients h3,
+.RecipeEditor .Ingredients ::-webkit-scrollbar-thumb {
+    background-color: #1baf1b;
+}
+.RecipeEditor .Steps h3,
+.RecipeEditor .Steps ::-webkit-scrollbar-thumb {
+    background-color: #0078da;
+}
+
+.RecipeEditor .LessButton,
+.RecipeEditor .MoreButton {
+    font-family: 'Roboto';
+    text-align: center;
+    font-size: 3rem;
+    height: 3rem;
+    width: 3rem;
+    line-height: 3rem;
+    border-radius: 100%;
+    background-color: #ffffff;
+    text-shadow: none;
+    cursor: pointer;
+    position: relative;
+    top: 0;
+    transition: transform 0.2s ease-in;
+}
+.RecipeEditor .LessButton:hover,
+.RecipeEditor .MoreButton:hover {
+    transform: scale(1.1);
+}
+.RecipeEditor .LessButton {
+    right: 1rem;
+}
+.RecipeEditor .MoreButton {
+    left: 1rem;
+}
+.RecipeEditor .Ingredients .LessButton,
+.RecipeEditor .Ingredients .MoreButton {
+    color: #1baf1b;
+}
+.RecipeEditor .Steps .LessButton,
+.RecipeEditor .Steps .MoreButton {
+    color: #0078da;
+}
+
+.RecipeEditCTAs {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 3.5rem;
+    width: 75vw;
+    left: 12.5vw;
+}
+
+@media (max-width: 1024px) {
+    .RecipeEditor {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, max-content);
+        grid-auto-flow: column;
+        height: calc(100vh - 16rem);
+        width: 95vw;
+        overflow-y: auto;
+        background-color: white;
+    }
+    .RecipeEditor .Basics {
+        grid-area: auto;
+    }
+    .RecipeEditor .Ingredients {
+        grid-area: auto;
+    }
+    .RecipeEditor .Steps {
+        grid-area: auto;
+    }
+
+    .RecipeEditor .BasicsInputs,
+    .RecipeEditor .IngredientsInputs,
+    .RecipeEditor .StepsInputs {
+        padding: 0 2rem;
+    }
+
+    .RecipeEditCTAs {
+        left: 2.5vw;
+        width: 95vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .RecipeEditor {
+        width: 95vw;
+        height: calc(100vh - 15rem);
+    }
+}
+
+@media (max-width: 600px) {
+    .RecipeEditor .BasicsInputs,
+    .RecipeEditor .IngredientsInputs,
+    .RecipeEditor .StepsInputs {
+        padding: 0 0.5rem;
+    }
+}

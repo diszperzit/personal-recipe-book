@@ -1,0 +1,14 @@
+.RecipeSteps {
+    display: grid;
+    grid-row-gap: 0.3rem;
+    grid-auto-rows: max-content;
+    margin: 1rem 0 0;
+    overflow-y: auto;
+    height: 85%;
+}
+
+@media (max-width: 1024px) {
+    .RecipeSteps {
+        height: auto;
+    }
+}
