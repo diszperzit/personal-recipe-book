@@ -3,8 +3,11 @@
 ## _AKA 100 Recipes To Save Your Stomach_
 
 This software is a personal recipe book designed to keep count of all the foods one has mastered to cook.
+
 Public Demo: https://100-recipes-to-save-your-stomach.netlify.app/
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/002bb89e-7e94-4eb4-ae7a-c44c3a5cda1d/deploy-status)](https://app.netlify.com/sites/100-recipes-to-save-your-stomach/deploys)
+
 Authentication: personal@recipes.web / Recipes123 (Note that the create/edit functions will **NOT** work in the demo application!)
 
 ## Features
