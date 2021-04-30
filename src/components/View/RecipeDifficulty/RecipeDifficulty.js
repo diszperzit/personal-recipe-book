@@ -1,9 +1,8 @@
-import React from 'react';
 import styles from './RecipeDifficulty.module.css';
 
 import RecipeDifficultyBar from './RecipeDifficultyBar/RecipeDifficultyBar';
 
-const recipeDifficulty = (props) => {
+const RecipeDifficulty = props => {
     const difficultyLevels = [
         'Plongeur',
         'Commis',
@@ -41,4 +40,4 @@ const recipeDifficulty = (props) => {
     );
 };
 
-export default recipeDifficulty;
+export default RecipeDifficulty;

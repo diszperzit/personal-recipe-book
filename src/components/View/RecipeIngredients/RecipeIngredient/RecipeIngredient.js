@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from './RecipeIngredient.module.css';
 import sprite from '../../../../assets/images/gastronomy-icons.svg';
 
-const recipeIngredient = (props) => {
+const RecipeIngredient = props => {
     const quantity =
         props.quantity === '' ? `to taste` : `${props.quantity} ${props.unit}`;
     return (
@@ -16,4 +15,4 @@ const recipeIngredient = (props) => {
     );
 };
 
-export default recipeIngredient;
+export default RecipeIngredient;

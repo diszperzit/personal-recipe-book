@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from './Checkbox.module.css';
 
-const checkbox = (props) => {
+const Checkbox = props => {
     let classNames = [styles.CheckboxWrapper, styles[props.name]];
     if (props.active) {
         classNames.push(styles.active);
@@ -20,4 +19,4 @@ const checkbox = (props) => {
     );
 };
 
-export default checkbox;
+export default Checkbox;

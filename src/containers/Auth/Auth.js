@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styles from './Auth.module.css';
 
@@ -11,131 +11,126 @@ import { updateObject } from '../../helpers/utility';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/actionIndex';
 
-class Auth extends Component {
-    state = {
-        loginForm: {
-            email: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'email',
-                    placeholder: 'Mail Address',
-                },
-                value: '',
+const Auth = props => {
+    const initialFormState = {
+        email: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'email',
+                placeholder: 'Mail Address',
             },
-            password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Password',
-                },
-                value: '',
+            value: '',
+        },
+        password: {
+            elementType: 'input',
+            elementConfig: {
+                type: 'password',
+                placeholder: 'Password',
             },
+            value: '',
         },
     };
+    const [loginForm, setLoginForm] = useState(initialFormState);
 
-    changeInput = (event, inputName) => {
-        const updatedLoginForm = updateObject(this.state.loginForm, {
-            [inputName]: updateObject(this.state.loginForm[inputName], {
+    const changeInput = (event, inputName) => {
+        const updatedLoginForm = updateObject(loginForm, {
+            [inputName]: updateObject(loginForm[inputName], {
                 value: event.target.value,
             }),
         });
-        this.setState({ loginForm: updatedLoginForm });
+        setLoginForm(updatedLoginForm);
     };
-    tryLogin = (event) => {
+
+    const tryLogin = event => {
         event.preventDefault();
-        this.props.onAuth(
-            this.state.loginForm.email.value,
-            this.state.loginForm.password.value
-        );
-        const clearedEmail = updateObject(this.state.loginForm.email, {
+        props.onAuth(loginForm.email.value, loginForm.password.value);
+        const clearedEmail = updateObject(loginForm.email, {
             value: '',
         });
-        const clearedPassword = updateObject(this.state.loginForm.password, {
+        const clearedPassword = updateObject(loginForm.password, {
             value: '',
         });
-        const clearedloginForm = updateObject(this.state.loginForm, {
+        const clearedloginForm = updateObject(loginForm, {
             email: clearedEmail,
             password: clearedPassword,
         });
-        this.setState({ loginForm: clearedloginForm });
+        setLoginForm(clearedloginForm);
     };
 
-    render() {
-        const formElementsArray = [];
-        for (let key in this.state.loginForm) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.loginForm[key],
-            });
-        }
-
-        let formContents = <Spinner />;
-        if (!this.props.authInProgress) {
-            const formInputs = formElementsArray.map((formElement) => (
-                <Input
-                    key={formElement.id}
-                    elementType={formElement.config.elementType}
-                    elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value}
-                    changed={(event) => this.changeInput(event, formElement.id)}
-                />
-            ));
-            formContents = (
-                <React.Fragment>
-                    {formInputs}
-                    <Button color="green" type="submit" svgName="login">
-                        Log In
-                    </Button>
-                </React.Fragment>
-            );
-        }
-        if (this.props.authError) {
-            formContents = (
-                <p>
-                    {[
-                        'INVALID_EMAIL',
-                        'INVALID_PASSWORD',
-                        'MISSING_PASSWORD',
-                    ].includes(this.props.authError.message)
-                        ? 'Log-in informations incorrect.'
-                        : this.props.authError.message}
-                </p>
-            );
-        }
-        if (this.props.authenticated) {
-            formContents = '';
-        }
-        let modal = (
-            <CSSTransition
-                in={this.props.showLoginModal}
-                timeout={500}
-                classNames={{
-                    enterActive: styles.AuthModalEnterActive,
-                    enterDone: styles.AuthModalEnterDone,
-                    exitActive: styles.AuthModalExitActive,
-                    exitDone: styles.AuthModalExitDone,
-                }}
-                mountOnEnter
-                unmountOnExit
-            >
-                <div className={styles.AuthModal}>
-                    <Overlay clicked={this.props.onToggleLoginModal} />
-                    <form className={styles.AuthForm} onSubmit={this.tryLogin}>
-                        {formContents}
-                        <span
-                            className={styles.CloseModal}
-                            onClick={this.props.onToggleLoginModal}
-                        ></span>
-                    </form>
-                </div>
-            </CSSTransition>
-        );
-
-        return <div className={styles.Auth}>{modal}</div>;
+    const formElementsArray = [];
+    for (let key in loginForm) {
+        formElementsArray.push({
+            id: key,
+            config: loginForm[key],
+        });
     }
-}
 
-const mapStateToProps = (state) => {
+    let formContents = <Spinner />;
+    if (!props.authInProgress) {
+        const formInputs = formElementsArray.map(formElement => (
+            <Input
+                key={formElement.id}
+                elementType={formElement.config.elementType}
+                elementConfig={formElement.config.elementConfig}
+                value={formElement.config.value}
+                changed={event => changeInput(event, formElement.id)}
+            />
+        ));
+        formContents = (
+            <>
+                {formInputs}
+                <Button color="green" type="submit" svgName="login">
+                    Log In
+                </Button>
+            </>
+        );
+    }
+    if (props.authError) {
+        formContents = (
+            <p>
+                {[
+                    'INVALID_EMAIL',
+                    'INVALID_PASSWORD',
+                    'MISSING_PASSWORD',
+                ].includes(props.authError.message)
+                    ? 'Log-in informations incorrect.'
+                    : props.authError.message}
+            </p>
+        );
+    }
+    if (props.authenticated) {
+        formContents = '';
+    }
+    let modal = (
+        <CSSTransition
+            in={props.showLoginModal}
+            timeout={500}
+            classNames={{
+                enterActive: styles.AuthModalEnterActive,
+                enterDone: styles.AuthModalEnterDone,
+                exitActive: styles.AuthModalExitActive,
+                exitDone: styles.AuthModalExitDone,
+            }}
+            mountOnEnter
+            unmountOnExit
+        >
+            <div className={styles.AuthModal}>
+                <Overlay clicked={props.onToggleLoginModal} />
+                <form className={styles.AuthForm} onSubmit={tryLogin}>
+                    {formContents}
+                    <span
+                        className={styles.CloseModal}
+                        onClick={props.onToggleLoginModal}
+                    ></span>
+                </form>
+            </div>
+        </CSSTransition>
+    );
+
+    return <div className={styles.Auth}>{modal}</div>;
+};
+
+const mapStateToProps = state => {
     return {
         token: state.auth.token,
         userId: state.auth.userId,
@@ -147,7 +142,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password) => dispatch(actions.auth(email, password)),
         onToggleLoginModal: () => dispatch(actions.toggleLoginModal()),

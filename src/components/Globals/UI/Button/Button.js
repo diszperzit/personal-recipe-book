@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from './Button.module.css';
 import sprite from '../../../../assets/images/gastronomy-icons.svg';
 
-const button = (props) => {
+const Button = props => {
     const classNames = [styles.Button, styles[props.color]];
     if (props.show === 'mobile') {
         classNames.push(styles.MobileOnly);
@@ -21,4 +20,4 @@ const button = (props) => {
     );
 };
 
-export default button;
+export default Button;

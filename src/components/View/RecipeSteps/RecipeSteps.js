@@ -1,9 +1,8 @@
-import React from 'react';
 import styles from './RecipeSteps.module.css';
 
 import RecipeStep from './RecipeStep/RecipeStep';
 
-const recipeSteps = (props) => {
+const RecipeSteps = props => {
     let steps = '';
     if (props.steps) {
         steps = Object.entries(props.steps).map(([slug, data]) => {
@@ -17,11 +16,11 @@ const recipeSteps = (props) => {
         });
     }
     return (
-        <React.Fragment>
+        <>
             <h3>Recipe</h3>
             <div className={styles.RecipeSteps}>{steps}</div>
-        </React.Fragment>
+        </>
     );
 };
 
-export default recipeSteps;
+export default RecipeSteps;

@@ -1,15 +1,14 @@
-import React from 'react';
 import styles from './EditIngredient.module.css';
 import Input from '../../Globals/UI/Input/Input';
 
-const editStep = (props) => {
+const EditIngredient = props => {
     return (
         <div className={styles.EditIngredient}>
             <Input
                 name={`ingredient[${props.index}][name]`}
                 elementType="input"
                 elementConfig={{ placeholder: 'NAME' }}
-                changed={(event) => props.changed(event, props.index, 'name')}
+                changed={event => props.changed(event, props.index, 'name')}
                 value={props.ingredient.name}
                 mode="full"
             />
@@ -27,7 +26,7 @@ const editStep = (props) => {
                         { value: 'vegetable', displayValue: 'Vegetable' },
                     ],
                 }}
-                changed={(event) => props.changed(event, props.index, 'type')}
+                changed={event => props.changed(event, props.index, 'type')}
                 value={props.ingredient.type}
                 mode="full"
             />
@@ -35,9 +34,7 @@ const editStep = (props) => {
                 name={`ingredient[${props.index}][quantity]`}
                 elementType="input"
                 elementConfig={{ placeholder: 'QY' }}
-                changed={(event) =>
-                    props.changed(event, props.index, 'quantity')
-                }
+                changed={event => props.changed(event, props.index, 'quantity')}
                 value={props.ingredient.quantity}
                 mode="full"
             />
@@ -45,7 +42,7 @@ const editStep = (props) => {
                 name={`ingredient[${props.index}][unit]`}
                 elementType="input"
                 elementConfig={{ placeholder: 'UNIT' }}
-                changed={(event) => props.changed(event, props.index, 'unit')}
+                changed={event => props.changed(event, props.index, 'unit')}
                 value={props.ingredient.unit}
                 mode="full"
             />
@@ -53,4 +50,4 @@ const editStep = (props) => {
     );
 };
 
-export default editStep;
+export default EditIngredient;

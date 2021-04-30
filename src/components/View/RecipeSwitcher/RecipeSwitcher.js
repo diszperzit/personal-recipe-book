@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from './RecipeSwitcher.module.css';
 
-const switcher = (props) => {
+const RecipeSwitcher = props => {
     let switcherClasses = [styles.RecipeSwitcher, styles[props.direction]];
     if (props.disabled) {
         switcherClasses.push(styles.Disabled);
@@ -14,4 +13,4 @@ const switcher = (props) => {
     );
 };
 
-export default switcher;
+export default RecipeSwitcher;

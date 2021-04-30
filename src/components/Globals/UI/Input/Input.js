@@ -1,8 +1,6 @@
-import React from 'react';
-
 import styles from './Input.module.css';
 
-const input = (props) => {
+const Input = props => {
     let inputElement = '';
     switch (props.elementType) {
         case 'input':
@@ -32,7 +30,7 @@ const input = (props) => {
                     value={props.value}
                     onChange={props.changed}
                 >
-                    {props.elementConfig.options.map((option) => {
+                    {props.elementConfig.options.map(option => {
                         return (
                             <option key={option.value} value={option.value}>
                                 {option.displayValue}
@@ -60,4 +58,4 @@ const input = (props) => {
     );
 };
 
-export default input;
+export default Input;

@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from './RecipeDifficultyBar.module.css';
 
-const recipeDifficultyBar = (props) => {
+const RecipeDifficultyBar = props => {
     let classes = [styles.RecipeDifficultyBar];
     if (props.filled) {
         classes.push(styles.Filled);
@@ -18,4 +17,4 @@ const recipeDifficultyBar = (props) => {
     );
 };
 
-export default recipeDifficultyBar;
+export default RecipeDifficultyBar;

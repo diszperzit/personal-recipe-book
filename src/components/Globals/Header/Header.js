@@ -1,9 +1,8 @@
-import React from 'react';
 import styles from './Header.module.css';
 
 import { Link } from 'react-router-dom';
 
-const header = () => {
+const Header = () => {
     return (
         <header className={styles.Header}>
             <Link to="/">
@@ -13,4 +12,4 @@ const header = () => {
     );
 };
 
-export default header;
+export default Header;

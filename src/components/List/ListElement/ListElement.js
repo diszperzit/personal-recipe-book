@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from './ListElement.module.css';
 import sprite from '../../../assets/images/gastronomy-icons.svg';
 
-const listElement = (props) => {
+const ListElement = props => {
     const categoryName = props.category.replace(' ', '').toLowerCase();
     const categoryClasses = [styles.RecipeCategory, styles[categoryName]].join(
         ' '
@@ -32,4 +31,4 @@ const listElement = (props) => {
     );
 };
 
-export default listElement;
+export default ListElement;

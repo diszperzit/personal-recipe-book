@@ -1,8 +1,7 @@
-import React from 'react';
 import styles from './RecipeTime.module.css';
 import sprite from '../../../assets/images/gastronomy-icons.svg';
 
-const recipeTime = (props) => {
+const RecipeTime = props => {
     let recipeTime = '';
     switch (true) {
         case props.time < 3:
@@ -25,4 +24,4 @@ const recipeTime = (props) => {
     );
 };
 
-export default recipeTime;
+export default RecipeTime;

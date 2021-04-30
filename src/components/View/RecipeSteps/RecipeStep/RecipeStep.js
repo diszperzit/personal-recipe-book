@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from './RecipeStep.module.css';
 
-const recipeStep = (props) => {
+const RecipeStep = props => {
     return (
         <div className={styles.RecipeStep}>
             <span className={styles.RecipeStepIndex}>{props.index}) </span>
@@ -10,4 +9,4 @@ const recipeStep = (props) => {
     );
 };
 
-export default recipeStep;
+export default RecipeStep;

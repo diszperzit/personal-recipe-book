@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from './Search.module.css';
 
-const search = (props) => {
+const Search = props => {
     return (
         <input
             type="text"
@@ -13,4 +12,4 @@ const search = (props) => {
     );
 };
 
-export default search;
+export default Search;
