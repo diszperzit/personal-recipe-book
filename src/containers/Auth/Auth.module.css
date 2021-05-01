@@ -60,49 +60,6 @@
     transform: rotate(-45deg);
 }
 
-/* @keyframes openAuthModal {
-    0% {
-        opacity: 0;
-        transform: translateX(-100vw);
-    }
-    0% {
-        opacity: 0.8;
-        transform: translateX(-50vw);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes closeAuthModal {
-    0% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    0% {
-        opacity: 0.8;
-        transform: translateX(-50vw);
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(-100vw);
-    }
-}
-
-.auth-modal-enter {
-}
-.auth-modal-enter-active {
-    outline: 1px solid red;
-    animation: openAuthModal 1s ease-out forwards;
-}
-.auth-modal-exit {
-}
-.auth-modal-exit-active {
-    outline: 1px solid blue;
-    animation: closeAuthModal 1s ease-out forwards;
-} */
-
 @media (max-width: 480px) {
     .AuthForm {
         width: 90vw;

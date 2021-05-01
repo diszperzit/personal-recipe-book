@@ -6,13 +6,13 @@ export const fetchRecipesStart = () => {
         type: actionTypes.FETCH_RECIPES_START,
     };
 };
-export const fetchRecipesSuccess = (recipes) => {
+export const fetchRecipesSuccess = recipes => {
     return {
         type: actionTypes.FETCH_RECIPES_SUCCESS,
         recipes: recipes,
     };
 };
-export const fetchRecipesFail = (error) => {
+export const fetchRecipesFail = error => {
     return {
         type: actionTypes.FETCH_RECIPES_FAIL,
         error:
@@ -21,45 +21,24 @@ export const fetchRecipesFail = (error) => {
 };
 
 export const fetchRecipes = () => {
-    return (dispatch) => {
+    return dispatch => {
         dispatch(fetchRecipesStart());
         axios
             .get('/recipes.json')
-            .then((response) => {
+            .then(response => {
                 const fetchedRecipes = [];
                 for (const key in response.data) {
                     fetchedRecipes.push({ ...response.data[key] });
                 }
                 dispatch(fetchRecipesSuccess(fetchedRecipes));
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch(fetchRecipesFail(error));
             });
     };
 };
 
-export const switchViewedRecipe = (change) => {
-    return {
-        type: actionTypes.SET_SWITCHED_RECIPE,
-        change: change,
-    };
-};
-
-export const setViewedRecipe = (index) => {
-    return {
-        type: actionTypes.SET_VIEWED_RECIPE,
-        index: index,
-    };
-};
-
-export const setEditedRecipe = (index) => {
-    return {
-        type: actionTypes.SET_EDITED_RECIPE,
-        index: index,
-    };
-};
-
-export const toggleListFilters = (index) => {
+export const toggleListFilters = index => {
     return {
         type: actionTypes.TOGGLE_LIST_FILTERS,
         index: index,
@@ -71,13 +50,13 @@ export const uploadRecipesStart = () => {
         type: actionTypes.UPLOAD_RECIPE_START,
     };
 };
-export const uploadRecipesSuccess = (recipes) => {
+export const uploadRecipesSuccess = recipes => {
     return {
         type: actionTypes.UPLOAD_RECIPE_SUCCESS,
         recipes: recipes,
     };
 };
-export const uploadRecipesFail = (error) => {
+export const uploadRecipesFail = error => {
     return {
         type: actionTypes.UPLOAD_RECIPE_FAIL,
         error:
@@ -86,15 +65,15 @@ export const uploadRecipesFail = (error) => {
 };
 
 export const uploadRecipe = (recipe, token) => {
-    return (dispatch) => {
+    return dispatch => {
         dispatch(uploadRecipesStart());
         axios
             .put(`/recipes/recipe${recipe.index}.json?auth=${token}`, recipe)
-            .then((response) => {
+            .then(response => {
                 dispatch(uploadRecipesSuccess(response));
                 dispatch(fetchRecipes());
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch(uploadRecipesFail(error));
             });
     };
@@ -105,13 +84,13 @@ export const deleteRecipeStart = () => {
         type: actionTypes.DELETE_RECIPE_START,
     };
 };
-export const deleteRecipeSuccess = (recipes) => {
+export const deleteRecipeSuccess = recipes => {
     return {
         type: actionTypes.DELETE_RECIPE_SUCCESS,
         recipes: recipes,
     };
 };
-export const deleteRecipeFail = (error) => {
+export const deleteRecipeFail = error => {
     return {
         type: actionTypes.DELETE_RECIPE_FAIL,
         error:
@@ -120,15 +99,15 @@ export const deleteRecipeFail = (error) => {
 };
 
 export const deleteRecipe = (index, token) => {
-    return (dispatch) => {
+    return dispatch => {
         dispatch(deleteRecipeStart());
         axios
             .delete(`/recipes/recipe${index}.json?auth=${token}`)
-            .then((response) => {
+            .then(response => {
                 dispatch(deleteRecipeSuccess(response));
                 dispatch(fetchRecipes());
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch(deleteRecipeFail(error));
             });
     };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './RecipeLister.module.css';
 
 import ListElement from '../../components/List/ListElement/ListElement';
@@ -11,6 +12,7 @@ import * as actions from '../../store/actions/actionIndex';
 import { connect } from 'react-redux';
 
 const RecipeList = props => {
+    console.log('RECIPELISTER IS RENDERING');
     const buttons = {
         maindish: 'Main Dish',
         breakfast: 'Breakfast',
@@ -21,15 +23,7 @@ const RecipeList = props => {
     const [activeButtons, setActiveButtons] = useState(Object.keys(buttons));
     const [searchText, setSearchText] = useState('');
 
-    useEffect(() => {
-        props.onSetEditedRecipe(false);
-    }, []);
-
-    const navigateToUpload = () => {
-        if (props.authenticated) {
-            props.history.push('/edit');
-        }
-    };
+    const history = useHistory();
 
     const setSearch = event => {
         setSearchText(event.target.value);
@@ -52,9 +46,14 @@ const RecipeList = props => {
         props.onToggleListFilters();
     };
 
-    const setViewedRecipe = index => {
-        props.onSetViewedRecipe(index);
-        props.history.push('/view');
+    const navigateToUpload = () => {
+        if (props.authenticated) {
+            history.push('/upload');
+        }
+    };
+
+    const navigateToView = index => {
+        history.push(`/view/${index}`);
     };
 
     let showedRecipes = <Spinner />;
@@ -78,7 +77,7 @@ const RecipeList = props => {
                         title={recipe.name}
                         thumbnail={recipe.imageThumbnail}
                         category={recipe.category}
-                        clicked={() => setViewedRecipe(recipe.index)}
+                        clicked={() => navigateToView(recipe.index)}
                     ></ListElement>
                 );
             });
@@ -165,7 +164,6 @@ const mapStateToProps = state => {
         loading: state.recipe.loading,
         fetched: state.recipe.fetched,
         recipes: state.recipe.recipes,
-        editedRecipe: state.recipe.editedRecipe,
         showListFilters: state.recipe.showListFilters,
         recipeError: state.recipe.recipeError,
     };
@@ -175,8 +173,6 @@ const mapDispatchToProps = dispatch => {
     return {
         onToggleLoginModal: () => dispatch(actions.toggleLoginModal()),
         onLogout: () => dispatch(actions.logout()),
-        onSetViewedRecipe: index => dispatch(actions.setViewedRecipe(index)),
-        onSetEditedRecipe: index => dispatch(actions.setEditedRecipe(index)),
         onToggleListFilters: index =>
             dispatch(actions.toggleListFilters(index)),
     };

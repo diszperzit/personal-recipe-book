@@ -1,8 +1,5 @@
 export {
     fetchRecipes,
-    switchViewedRecipe,
-    setViewedRecipe,
-    setEditedRecipe,
     toggleListFilters,
     uploadRecipe,
     deleteRecipe,

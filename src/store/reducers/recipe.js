@@ -2,8 +2,6 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../helpers/utility';
 
 const initialState = {
-    activeRecipe: 1,
-    editedRecipe: false,
     recipes: [],
     recipeError: false,
     loading: false,
@@ -11,7 +9,7 @@ const initialState = {
     showListFilters: true,
 };
 
-const fetchRecipesStart = (state) => {
+const fetchRecipesStart = state => {
     return updateObject(state, {
         loading: true,
     });
@@ -30,34 +28,18 @@ const fetchRecipesFail = (state, action) => {
     });
 };
 
-const setSwitchedRecipe = (state, action) => {
-    return updateObject(state, {
-        activeRecipe: state.activeRecipe + action.change || 1,
-    });
-};
-const setViewedRecipe = (state, action) => {
-    return updateObject(state, {
-        activeRecipe: action.index,
-        editedRecipe: false,
-    });
-};
-const setEditedRecipe = (state, action) => {
-    return updateObject(state, {
-        editedRecipe: action.index,
-    });
-};
-const toggleListFilters = (state) => {
+const toggleListFilters = state => {
     return updateObject(state, {
         showListFilters: !state.showListFilters,
     });
 };
 
-const uploadRecipeStart = (state) => {
+const uploadRecipeStart = state => {
     return updateObject(state, {
         loading: true,
     });
 };
-const uploadRecipeSuccess = (state) => {
+const uploadRecipeSuccess = state => {
     return updateObject(state, {
         loading: false,
     });
@@ -69,12 +51,12 @@ const uploadRecipeFail = (state, action) => {
     });
 };
 
-const deleteRecipeStart = (state) => {
+const deleteRecipeStart = state => {
     return updateObject(state, {
         loading: true,
     });
 };
-const deleteRecipeSuccess = (state) => {
+const deleteRecipeSuccess = state => {
     return updateObject(state, {
         loading: false,
     });
@@ -95,12 +77,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_RECIPES_FAIL:
             return fetchRecipesFail(state, action);
 
-        case actionTypes.SET_SWITCHED_RECIPE:
-            return setSwitchedRecipe(state, action);
-        case actionTypes.SET_VIEWED_RECIPE:
-            return setViewedRecipe(state, action);
-        case actionTypes.SET_EDITED_RECIPE:
-            return setEditedRecipe(state, action);
         case actionTypes.TOGGLE_LIST_FILTERS:
             return toggleListFilters(state, action);
 

@@ -24,6 +24,10 @@ div#root {
     grid-template-rows: 5rem calc(100vh - 7rem) 2rem;
     overflow: hidden;
 }
+div#auth-root {
+    position: relative;
+    z-index: 1;
+}
 
 svg {
     width: 2rem;

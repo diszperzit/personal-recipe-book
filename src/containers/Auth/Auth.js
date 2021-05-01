@@ -127,7 +127,7 @@ const Auth = props => {
         </CSSTransition>
     );
 
-    return <div className={styles.Auth}>{modal}</div>;
+    return modal;
 };
 
 const mapStateToProps = state => {

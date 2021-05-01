@@ -1,16 +1,24 @@
 import { useState } from 'react';
+import { useHistory, useParams, Prompt } from 'react-router-dom';
 import styles from './RecipeEditor.module.css';
 
 import Input from '../../components/Globals/UI/Input/Input';
 import Button from '../../components/Globals/UI/Button/Button';
 import EditIngredient from '../../components/Edit/EditIngredient/EditIngredient';
 import EditStep from '../../components/Edit/EditStep/EditStep';
+import Spinner from '../../components/Globals/UI/Spinner/Spinner';
 
 import { updateObject } from '../../helpers/utility';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/actionIndex';
 
 const RecipeEditor = props => {
+    const history = useHistory();
+    const { id: recipeID } = useParams();
+    const recipe =
+        props.fetched && props.isEditing && props.recipes[recipeID - 1];
+
+    console.log('RECIPEEDITOR IS RENDERING');
     const initialFormState = {
         name: {
             elementType: 'input',
@@ -19,9 +27,7 @@ const RecipeEditor = props => {
                 placeholder: 'Fitness Chicken',
             },
             label: 'Recipe Name (4-30 characters)',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].name
-                : '',
+            value: props.isEditing ? recipe.name : '',
             validation: {
                 required: true,
                 minLength: 4,
@@ -41,9 +47,7 @@ const RecipeEditor = props => {
                 ],
             },
             label: 'Dish Category',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].category
-                : 'Main Dish',
+            value: props.isEditing ? recipe.category : 'Main Dish',
             validation: {},
             valid: true,
         },
@@ -56,9 +60,7 @@ const RecipeEditor = props => {
                 min: 0.25,
             },
             label: 'Time To Cook (in hours, min 0,25)',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].time
-                : '',
+            value: props.isEditing ? recipe.time : '',
             validation: {
                 required: true,
             },
@@ -76,9 +78,7 @@ const RecipeEditor = props => {
                 ],
             },
             label: 'Difficulty Level (1-5)',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].difficulty
-                : '1',
+            value: props.isEditing ? recipe.difficulty : '1',
             validation: {},
             valid: true,
         },
@@ -89,9 +89,7 @@ const RecipeEditor = props => {
                 placeholder: 'e.g. https:/i.imgur.com...',
             },
             label: 'Image #1 (680 x 400) external URL',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].imageMain
-                : '',
+            value: props.isEditing ? recipe.imageMain : '',
             validation: {
                 required: true,
             },
@@ -104,9 +102,7 @@ const RecipeEditor = props => {
                 placeholder: 'e.g. https:/i.imgur.com...',
             },
             label: 'Image #2 (680 x 400) external URL',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].imageSecondary
-                : '',
+            value: props.isEditing ? recipe.imageSecondary : '',
             validation: {
                 required: true,
             },
@@ -119,9 +115,7 @@ const RecipeEditor = props => {
                 placeholder: 'e.g. https:/i.imgur.com...',
             },
             label: 'Thumbnail (360 x 240) external URL',
-            value: props.editedRecipe
-                ? props.recipes[props.editedRecipe - 1].imageThumbnail
-                : '',
+            value: props.isEditing ? recipe.imageThumbnail : '',
             validation: {
                 required: true,
             },
@@ -132,9 +126,7 @@ const RecipeEditor = props => {
             elementConfig: {
                 type: 'hidden',
             },
-            value: props.editedRecipe
-                ? props.editedRecipe
-                : props.recipes.length + 1,
+            value: props.isEditing ? recipeID : props.recipes.length + 1,
             validation: {
                 required: true,
             },
@@ -144,21 +136,16 @@ const RecipeEditor = props => {
 
     const [basics, setBasics] = useState(initialFormState);
     const [ingredients, setIngredients] = useState(
-        props.editedRecipe
-            ? props.recipes[props.editedRecipe - 1].ingredients
-            : {}
+        props.isEditing ? recipe.ingredients : {}
     );
     const [ingredientCount, setIngredientCount] = useState(
-        props.editedRecipe
-            ? props.recipes[props.editedRecipe - 1].ingredientCount
-            : 0
+        props.isEditing ? recipe.ingredientCount : 0
     );
-    const [steps, setSteps] = useState(
-        props.editedRecipe ? props.recipes[props.editedRecipe - 1].steps : {}
-    );
+    const [steps, setSteps] = useState(props.isEditing ? recipe.steps : {});
     const [stepCount, setStepCount] = useState(
-        props.editedRecipe ? props.recipes[props.editedRecipe - 1].stepCount : 0
+        props.isEditing ? recipe.stepCount : 0
     );
+    const [formTouched, setFormTouched] = useState(false);
 
     const changeBasicData = (event, inputIdentifier) => {
         const updatedFormElement = updateObject(basics[inputIdentifier], {
@@ -169,8 +156,8 @@ const RecipeEditor = props => {
         });
 
         setBasics(updatedBasics);
+        setFormTouched(true);
     };
-
     const changeIngredientData = (event, identifier, inputName) => {
         const updatedIngredient = updateObject(ingredients[identifier], {
             [inputName]: event.target.value,
@@ -179,55 +166,79 @@ const RecipeEditor = props => {
             [identifier]: updatedIngredient,
         });
         setIngredients(updatedIngredients);
+        setFormTouched(true);
     };
-
-    const changeIngredientCount = change => {
+    const incrementIngredientCount = change => {
         const updatedIngredients = ingredients ? ingredients : [];
         const updatedIngredientCount = ingredientCount + change;
-        if (change === 1) {
-            updatedIngredients[`ingredient${updatedIngredientCount}`] = {
-                name: '',
-                type: 'dairy',
-                quantity: '',
-                unit: '',
-            };
-        }
-        if (change === -1) {
-            delete updatedIngredients[`ingredient${ingredientCount}`];
-        }
+        updatedIngredients[`ingredient${updatedIngredientCount}`] = {
+            name: '',
+            type: 'dairy',
+            quantity: '',
+            unit: '',
+        };
+
         setIngredients(updatedIngredients);
         setIngredientCount(updatedIngredientCount);
+        setFormTouched(true);
     };
+    const decrementIngredientCount = change => {
+        const updatedIngredients = ingredients ? ingredients : [];
+        const updatedIngredientCount = ingredientCount + change;
 
+        delete updatedIngredients[`ingredient${ingredientCount}`];
+
+        setIngredients(updatedIngredients);
+        setIngredientCount(updatedIngredientCount);
+        setFormTouched(true);
+    };
     const changeStepData = (event, identifier) => {
         const updatedSteps = updateObject(
             (steps, { ...steps, [identifier]: event.target.value })
         );
         setSteps(updatedSteps);
+        setFormTouched(true);
     };
-
-    const changeStepCount = change => {
+    const incrementStepCount = change => {
         const updatedSteps = steps ? steps : [];
         const updatedStepCount = stepCount + change;
-        if (change === 1) {
-            updatedSteps[`step${updatedStepCount}`] = '';
-        }
-        if (change === -1) {
-            delete updatedSteps[`step${stepCount}`];
-        }
+
+        updatedSteps[`step${updatedStepCount}`] = '';
+
         setSteps(updatedSteps);
         setStepCount(updatedStepCount);
+        setFormTouched(true);
     };
+    const decrementStepCount = change => {
+        const updatedSteps = steps ? steps : [];
+        const updatedStepCount = stepCount + change;
 
-    const returnToRecipe = event => {
-        event.preventDefault();
-        props.history.push('/view');
+        delete updatedSteps[`step${stepCount}`];
+
+        setSteps(updatedSteps);
+        setStepCount(updatedStepCount);
+        setFormTouched(true);
     };
 
     const submitPrevent = event => {
         event.preventDefault();
     };
-
+    const deleteRecipe = event => {
+        event.preventDefault();
+        if (!props.isEditing) return;
+        if (window.confirm('Are you sure you want to delete this recipe?')) {
+            props.onDeleteRecipe(props.isEditing, props.token);
+            history.push(`/`);
+        }
+    };
+    const backToList = () => {
+        history.push(`/`);
+    };
+    const viewRecipe = event => {
+        event.preventDefault();
+        if (!props.isEditing) return;
+        history.push(`/view/${props.isEditing ? recipeID : ''}`);
+    };
     const uploadRecipe = event => {
         event.preventDefault();
         const basics = {};
@@ -243,15 +254,8 @@ const RecipeEditor = props => {
             stepCount: stepCount,
         };
         props.onUploadRecipe(recipe, props.token);
-        props.history.push('/');
-    };
-
-    const deleteRecipe = event => {
-        event.preventDefault();
-        if (window.confirm('Are you sure you want to delete this recipe?')) {
-            props.onDeleteRecipe(props.editedRecipe, props.token);
-            props.history.push('/');
-        }
+        setFormTouched(false);
+        history.push(`/`);
     };
 
     const formElementsArray = [];
@@ -303,101 +307,103 @@ const RecipeEditor = props => {
             );
         }
     }
-    return (
-        <div className={styles.RecipeEditorContainer}>
-            <form className={styles.RecipeEditor} onSubmit={submitPrevent}>
-                <div className={styles.Basics}>
-                    <h3>Basics</h3>
-                    <div className={styles.BasicsInputs}>{basicsForm}</div>
-                </div>
-                <div className={styles.Ingredients}>
-                    <h3>
-                        <span
-                            onClick={() => changeIngredientCount(-1)}
-                            className={styles.LessButton}
-                        >
-                            -
-                        </span>
-                        Ingredients
-                        <span
-                            onClick={() => changeIngredientCount(1)}
-                            className={styles.MoreButton}
-                        >
-                            +
-                        </span>
-                    </h3>
-                    <div className={styles.IngredientsInputs}>
-                        {ingredientsForm}
+
+    let contents = <Spinner />;
+    if (props.fetched) {
+        contents = (
+            <div className={styles.RecipeEditorContainer}>
+                <Prompt
+                    when={formTouched}
+                    message="Are you sure you want to leave? All your changes will be lost!"
+                />
+                <form className={styles.RecipeEditor} onSubmit={submitPrevent}>
+                    <div className={styles.Basics}>
+                        <h3>Basics</h3>
+                        <div className={styles.BasicsInputs}>{basicsForm}</div>
                     </div>
+                    <div className={styles.Ingredients}>
+                        <h3>
+                            <span
+                                onClick={decrementIngredientCount}
+                                className={styles.LessButton}
+                            >
+                                -
+                            </span>
+                            Ingredients
+                            <span
+                                onClick={incrementIngredientCount}
+                                className={styles.MoreButton}
+                            >
+                                +
+                            </span>
+                        </h3>
+                        <div className={styles.IngredientsInputs}>
+                            {ingredientsForm}
+                        </div>
+                    </div>
+                    <div className={styles.Steps}>
+                        <h3>
+                            <span
+                                onClick={decrementStepCount}
+                                className={styles.LessButton}
+                            >
+                                -
+                            </span>
+                            Steps
+                            <span
+                                onClick={incrementStepCount}
+                                className={styles.MoreButton}
+                            >
+                                +
+                            </span>
+                        </h3>
+                        <div className={styles.StepsInputs}>{stepsForm}</div>
+                    </div>
+                </form>
+                <div className={styles.RecipeEditCTAs}>
+                    <Button
+                        color={props.isEditing ? 'red' : 'disabled'}
+                        clicked={deleteRecipe}
+                        type="button"
+                        svgName="delete"
+                    >
+                        Delete recipe
+                    </Button>
+                    <Button
+                        color="orange"
+                        clicked={backToList}
+                        type="button"
+                        svgName="list"
+                    >
+                        Back to list
+                    </Button>
+                    <Button
+                        color={props.isEditing ? 'blue' : 'disabled'}
+                        clicked={viewRecipe}
+                        type="button"
+                        svgName="return"
+                    >
+                        View recipe
+                    </Button>
+                    <Button
+                        color="green"
+                        clicked={uploadRecipe}
+                        type="button"
+                        svgName="upload"
+                    >
+                        {props.isEditing ? 'Confirm edit' : 'Confirm upload'}
+                    </Button>
                 </div>
-                <div className={styles.Steps}>
-                    <h3>
-                        <span
-                            onClick={() => changeStepCount(-1)}
-                            className={styles.LessButton}
-                        >
-                            -
-                        </span>
-                        Steps
-                        <span
-                            onClick={() => changeStepCount(1)}
-                            className={styles.MoreButton}
-                        >
-                            +
-                        </span>
-                    </h3>
-                    <div className={styles.StepsInputs}>{stepsForm}</div>
-                </div>
-            </form>
-            <div className={styles.RecipeEditCTAs}>
-                <Button
-                    color={props.editedRecipe ? 'red' : 'disabled'}
-                    clicked={
-                        props.editedRecipe
-                            ? event => deleteRecipe(event)
-                            : event => event.preventDefault()
-                    }
-                    type="button"
-                    svgName="delete"
-                >
-                    Delete recipe
-                </Button>
-                <Button
-                    color="orange"
-                    clicked={() => props.history.push('/')}
-                    type="button"
-                    svgName="list"
-                >
-                    Back to list
-                </Button>
-                <Button
-                    color={props.editedRecipe ? 'blue' : 'disabled'}
-                    clicked={
-                        props.editedRecipe
-                            ? event => returnToRecipe(event)
-                            : event => event.preventDefault()
-                    }
-                    type="button"
-                    svgName="return"
-                >
-                    View recipe
-                </Button>
-                <Button
-                    color="green"
-                    clicked={event => uploadRecipe(event)}
-                    type="button"
-                    svgName="upload"
-                >
-                    {props.editedRecipe ? 'Confirm edit' : 'Confirm upload'}
-                </Button>
             </div>
-        </div>
-    );
+        );
+    }
+
+    return contents;
 };
 
 const mapStateToProps = state => {
     return {
-        editedRecipe: state.recipe.editedRecipe,
+        fetched: state.recipe.fetched,
         recipes: state.recipe.recipes,
         ingredientRows: state.recipe.ingredientRows,
         stepRows: state.recipe.stepRows,
@@ -411,7 +417,6 @@ const mapDispatchToProps = dispatch => {
             dispatch(actions.uploadRecipe(recipe, token)),
         onDeleteRecipe: (recipe, token) =>
             dispatch(actions.deleteRecipe(recipe, token)),
-        onSetEditedRecipe: index => dispatch(actions.setEditedRecipe(index)),
     };
 };
 
