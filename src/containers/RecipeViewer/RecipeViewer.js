@@ -1,5 +1,4 @@
 import { useHistory, useParams } from 'react-router-dom';
-import useTraceUpdate from '../../hooks/trace-update';
 import styles from './RecipeViewer.module.css';
 
 import Button from '../../components/Globals/UI/Button/Button';
@@ -10,34 +9,36 @@ import RecipeTime from '../../components/View/RecipeTime/RecipeTime';
 import RecipeIngredients from '../../components/View/RecipeIngredients/RecipeIngredients';
 import RecipeSteps from '../../components/View/RecipeSteps/RecipeSteps';
 
-import * as actions from '../../store/actions/actionIndex';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const RecipeViewer = props => {
-    console.log('RECIPEVIEWER IS RENDERING');
-    const history = useHistory();
     const { id: recipeID } = useParams();
-    useTraceUpdate(props);
 
-    const backToList = () => {
+    const authenticated = useSelector(state => state.auth.authenticated);
+    const fetched = useSelector(state => state.recipe.fetched);
+    const recipes = useSelector(state => state.recipe.recipes);
+
+    const history = useHistory();
+
+    const backToListHandler = () => {
         history.push(`/`);
     };
-    const prevRecipe = () => {
+    const prevRecipeHandler = () => {
         if (+recipeID === 1) return;
         history.push(`/view/${+recipeID - 1}`);
     };
-    const nextRecipe = () => {
-        if (+recipeID === props.recipes.length) return;
+    const nextRecipeHandler = () => {
+        if (+recipeID === recipes.length) return;
         history.push(`/view/${+recipeID + 1}`);
     };
-    const editRecipe = () => {
-        if (!props.authenticated) return;
+    const editRecipeHandler = () => {
+        if (!authenticated) return;
         history.push(`/edit/${recipeID}`);
     };
 
     let recipeText = <Spinner />;
-    if (props.fetched) {
-        const recipe = props.recipes[recipeID - 1];
+    if (fetched) {
+        const recipe = recipes[recipeID - 1];
         if (recipe === undefined) {
             recipeText = (
                 <p>
@@ -88,7 +89,7 @@ const RecipeViewer = props => {
             <div className={styles.RecipeCTAs}>
                 <Button
                     color={recipeID !== 1 ? 'red' : 'disabled'}
-                    clicked={prevRecipe}
+                    clicked={prevRecipeHandler}
                     type="button"
                     svgName="prev"
                 >
@@ -96,24 +97,22 @@ const RecipeViewer = props => {
                 </Button>
                 <Button
                     color="orange"
-                    clicked={backToList}
+                    clicked={backToListHandler}
                     type="button"
                     svgName="list"
                 >
                     Back to list
                 </Button>
                 <Button
-                    color={props.authenticated ? 'blue' : 'disabled'}
-                    clicked={editRecipe}
+                    color={authenticated ? 'blue' : 'disabled'}
+                    clicked={editRecipeHandler}
                     svgName="pencil"
                 >
                     Edit
                 </Button>
                 <Button
-                    color={
-                        recipeID !== props.recipes.length ? 'green' : 'disabled'
-                    }
-                    clicked={nextRecipe}
+                    color={recipeID !== recipes.length ? 'green' : 'disabled'}
+                    clicked={nextRecipeHandler}
                     type="button"
                     svgName="next"
                 >
@@ -124,12 +123,4 @@ const RecipeViewer = props => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        authenticated: state.auth.authenticated,
-        fetched: state.recipe.fetched,
-        recipes: state.recipe.recipes,
-    };
-};
-
-export default connect(mapStateToProps, null)(RecipeViewer);
+export default RecipeViewer;

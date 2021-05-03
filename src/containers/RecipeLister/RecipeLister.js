@@ -8,11 +8,12 @@ import Checkbox from '../../components/Globals/UI/Checkbox/Checkbox';
 import Search from '../../components/Globals/UI/Search/Search';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
 
-import * as actions from '../../store/actions/actionIndex';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../store/auth-slice';
+import { recipeActions } from '../../store/recipe-slice';
+import { logout } from '../../store/auth-actions';
 
 const RecipeList = props => {
-    console.log('RECIPELISTER IS RENDERING');
     const buttons = {
         maindish: 'Main Dish',
         breakfast: 'Breakfast',
@@ -23,12 +24,18 @@ const RecipeList = props => {
     const [activeButtons, setActiveButtons] = useState(Object.keys(buttons));
     const [searchText, setSearchText] = useState('');
 
+    const dispatch = useDispatch();
+    const authenticated = useSelector(state => state.auth.authenticated);
+    const fetched = useSelector(state => state.recipe.fetched);
+    const recipes = useSelector(state => state.recipe.recipes);
+    const showListFilters = useSelector(state => state.recipe.showListFilters);
+    const recipeError = useSelector(state => state.recipe.recipeError);
+
     const history = useHistory();
 
     const setSearch = event => {
         setSearchText(event.target.value);
     };
-
     const toggleFilter = (event, buttonName) => {
         let updatedActiveButtons = [...activeButtons];
         if (updatedActiveButtons.includes(buttonName)) {
@@ -41,24 +48,29 @@ const RecipeList = props => {
         }
         setActiveButtons(updatedActiveButtons);
     };
-
     const toggleListFilters = () => {
-        props.onToggleListFilters();
+        dispatch(recipeActions.toggleFilters());
     };
 
     const navigateToUpload = () => {
-        if (props.authenticated) {
+        if (authenticated) {
             history.push('/upload');
         }
     };
-
     const navigateToView = index => {
         history.push(`/view/${index}`);
     };
 
+    const toggleAuthModal = () => {
+        dispatch(authActions.toggleModal());
+    };
+    const logoutHandler = () => {
+        dispatch(logout());
+    };
+
     let showedRecipes = <Spinner />;
-    if (props.fetched) {
-        showedRecipes = props.recipes
+    if (fetched) {
+        showedRecipes = recipes
             .filter(recipe => {
                 return (
                     recipe.name
@@ -82,10 +94,8 @@ const RecipeList = props => {
                 );
             });
     }
-    if (props.recipeError) {
-        showedRecipes = (
-            <p className={styles.RecipeListError}>{props.recipeError}</p>
-        );
+    if (recipeError) {
+        showedRecipes = <p className={styles.RecipeListError}>{recipeError}</p>;
     }
 
     let checkboxes = Object.entries(buttons).map(([key, name]) => (
@@ -100,24 +110,20 @@ const RecipeList = props => {
     ));
 
     let authButton = (
-        <Button
-            color="green"
-            clicked={props.onToggleLoginModal}
-            svgName="login"
-        >
+        <Button color="green" clicked={toggleAuthModal} svgName="login">
             Authenticate
         </Button>
     );
-    if (props.authenticated) {
+    if (authenticated) {
         authButton = (
-            <Button color="red" clicked={props.onLogout} svgName="logout">
+            <Button color="red" clicked={logoutHandler} svgName="logout">
                 Logout
             </Button>
         );
     }
 
     let listSectionClasses = [styles.RecipeList];
-    if (!props.showListFilters) {
+    if (!showListFilters) {
         listSectionClasses.push(styles.FiltersHidden);
     }
 
@@ -137,7 +143,7 @@ const RecipeList = props => {
             </section>
             <div className={styles.RecipeListCTAs}>
                 <Button
-                    color={props.authenticated ? 'blue' : 'disabled'}
+                    color={authenticated ? 'blue' : 'disabled'}
                     clicked={navigateToUpload}
                     svgName="upload"
                 >
@@ -146,10 +152,10 @@ const RecipeList = props => {
                 <Button
                     color="orange"
                     clicked={toggleListFilters}
-                    svgName={props.showListFilters ? 'arrow-down' : 'arrow-up'}
+                    svgName={showListFilters ? 'arrow-down' : 'arrow-up'}
                     show="mobile"
                 >
-                    {props.showListFilters ? 'Hide filters' : 'Show filters'}
+                    {showListFilters ? 'Hide filters' : 'Show filters'}
                 </Button>
                 {authButton}
             </div>
@@ -157,25 +163,4 @@ const RecipeList = props => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        showLoginModal: state.auth.showLoginModal,
-        authenticated: state.auth.authenticated,
-        loading: state.recipe.loading,
-        fetched: state.recipe.fetched,
-        recipes: state.recipe.recipes,
-        showListFilters: state.recipe.showListFilters,
-        recipeError: state.recipe.recipeError,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onToggleLoginModal: () => dispatch(actions.toggleLoginModal()),
-        onLogout: () => dispatch(actions.logout()),
-        onToggleListFilters: index =>
-            dispatch(actions.toggleListFilters(index)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecipeList);
+export default RecipeList;

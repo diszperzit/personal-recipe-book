@@ -41,9 +41,9 @@ Personal Recipe Book is based on React, Redux and create-react-app. It is **pers
 
 MIT
 
-[feature-desktop-1]: https://i.imgur.com/gblOKlQ.jpg 'Feature - Desktop - 1'
-[feature-desktop-2]: https://i.imgur.com/VrD1an7.jpg 'Feature - Desktop - 2'
-[feature-desktop-3]: https://i.imgur.com/oK51xFj.jpg 'Feature - Desktop - 3'
-[feature-mobile-1]: https://i.imgur.com/Re4bOaV.jpg 'Feature - Mobile - 1'
-[feature-mobile-2]: https://i.imgur.com/qwhiGbf.jpg 'Feature - Mobile - 2'
-[feature-mobile-3]: https://i.imgur.com/CebfrCa.jpg 'Feature - Mobile - 3'
+[feature-desktop-1]: https://i.imgur.com/00eASnJ.png 'Feature - Desktop - 1'
+[feature-desktop-2]: https://i.imgur.com/PadLMw3.png 'Feature - Desktop - 2'
+[feature-desktop-3]: https://i.imgur.com/CICUl0y.png 'Feature - Desktop - 3'
+[feature-mobile-1]: https://i.imgur.com/u74IzAY.jpg 'Feature - Mobile - 1'
+[feature-mobile-2]: https://i.imgur.com/BdoZZlc.png 'Feature - Mobile - 2'
+[feature-mobile-3]: https://i.imgur.com/I4F8cUg.png 'Feature - Mobile - 3'

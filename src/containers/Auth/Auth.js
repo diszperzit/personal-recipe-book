@@ -8,8 +8,9 @@ import Button from '../../components/Globals/UI/Button/Button';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
 
 import { updateObject } from '../../helpers/utility';
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/actionIndex';
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions } from '../../store/auth-slice';
+import { login } from '../../store/auth-actions';
 
 const Auth = props => {
     const initialFormState = {
@@ -32,6 +33,16 @@ const Auth = props => {
     };
     const [loginForm, setLoginForm] = useState(initialFormState);
 
+    const dispatch = useDispatch();
+    const authInProgress = useSelector(state => state.auth.authInProgress);
+    const authError = useSelector(state => state.auth.authError);
+    const authenticated = useSelector(state => state.auth.authenticated);
+    const showAuthModal = useSelector(state => state.auth.showModal);
+
+    const toggleAuthModal = () => {
+        dispatch(authActions.toggleModal());
+    };
+
     const changeInput = (event, inputName) => {
         const updatedLoginForm = updateObject(loginForm, {
             [inputName]: updateObject(loginForm[inputName], {
@@ -43,7 +54,7 @@ const Auth = props => {
 
     const tryLogin = event => {
         event.preventDefault();
-        props.onAuth(loginForm.email.value, loginForm.password.value);
+        dispatch(login(loginForm.email.value, loginForm.password.value));
         const clearedEmail = updateObject(loginForm.email, {
             value: '',
         });
@@ -66,7 +77,7 @@ const Auth = props => {
     }
 
     let formContents = <Spinner />;
-    if (!props.authInProgress) {
+    if (!authInProgress) {
         const formInputs = formElementsArray.map(formElement => (
             <Input
                 key={formElement.id}
@@ -85,25 +96,25 @@ const Auth = props => {
             </>
         );
     }
-    if (props.authError) {
+    if (authError) {
         formContents = (
             <p>
                 {[
                     'INVALID_EMAIL',
                     'INVALID_PASSWORD',
                     'MISSING_PASSWORD',
-                ].includes(props.authError.message)
+                ].includes(authError.message)
                     ? 'Log-in informations incorrect.'
-                    : props.authError.message}
+                    : authError.message}
             </p>
         );
     }
-    if (props.authenticated) {
+    if (authenticated) {
         formContents = '';
     }
     let modal = (
         <CSSTransition
-            in={props.showLoginModal}
+            in={showAuthModal}
             timeout={500}
             classNames={{
                 enterActive: styles.AuthModalEnterActive,
@@ -115,12 +126,12 @@ const Auth = props => {
             unmountOnExit
         >
             <div className={styles.AuthModal}>
-                <Overlay clicked={props.onToggleLoginModal} />
+                <Overlay clicked={toggleAuthModal} />
                 <form className={styles.AuthForm} onSubmit={tryLogin}>
                     {formContents}
                     <span
                         className={styles.CloseModal}
-                        onClick={props.onToggleLoginModal}
+                        onClick={toggleAuthModal}
                     ></span>
                 </form>
             </div>
@@ -130,23 +141,4 @@ const Auth = props => {
     return modal;
 };
 
-const mapStateToProps = state => {
-    return {
-        token: state.auth.token,
-        userId: state.auth.userId,
-        showLoginModal: state.auth.showLoginModal,
-        authInProgress: state.auth.authInProgress,
-        authenticated: state.auth.authenticated,
-        authError: state.auth.authError,
-        loginError: state.auth.loginError,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onAuth: (email, password) => dispatch(actions.auth(email, password)),
-        onToggleLoginModal: () => dispatch(actions.toggleLoginModal()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default Auth;

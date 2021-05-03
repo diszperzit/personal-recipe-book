@@ -6,7 +6,6 @@ import Footer from '../../components/Globals/Footer/Footer';
 import Auth from '../../containers/Auth/Auth';
 
 const Layout = props => {
-    console.log('LAYOUT IS RENDERING');
     return (
         <>
             <Header />

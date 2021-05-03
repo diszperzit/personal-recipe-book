@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './App.css';
 
 import Layout from './hoc/Layout/Layout';
 import Spinner from './components/Globals/UI/Spinner/Spinner';
-import * as actions from './store/actions/actionIndex';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { tryAutoLogin } from './store/auth-actions';
+import { fetchRecipes } from './store/recipe-actions';
 
 const RecipeLister = React.lazy(() =>
     import('./containers/RecipeLister/RecipeLister')
@@ -18,72 +20,70 @@ const RecipeEditor = React.lazy(() =>
     import('./containers/RecipeEditor/RecipeEditor')
 );
 
-const AnimatedSwitch = withRouter(({ location }) => (
-    <TransitionGroup component={null}>
-        <CSSTransition
-            key={location.key}
-            classNames="Route"
-            timeout={{ enter: 500, exit: 500 }}
-        >
-            <React.Suspense fallback={<Spinner />}>
-                <Switch location={location}>
-                    <Route
-                        path="/"
-                        exact
-                        render={props => <RecipeLister {...props} />}
-                    />
-                    <Route
-                        path="/view/:id"
-                        render={props => <RecipeViewer {...props} />}
-                    />
-                    <Route
-                        path="/edit/:id"
-                        render={props => (
-                            <RecipeEditor {...props} isEditing={true} />
+const AnimatedSwitch = withRouter(({ location }) => {
+    const authenticated = useSelector(state => state.auth.authenticated);
+    return (
+        <TransitionGroup component={null}>
+            <CSSTransition
+                key={location.key}
+                classNames="Route"
+                timeout={{ enter: 200, exit: 200 }}
+            >
+                <React.Suspense fallback={<Spinner />}>
+                    <Switch location={location}>
+                        <Route
+                            path="/"
+                            exact
+                            render={props => <RecipeLister {...props} />}
+                        />
+                        <Route
+                            path="/view/:id"
+                            render={props => <RecipeViewer {...props} />}
+                        />
+                        {authenticated && (
+                            <Route
+                                path="/edit/:id"
+                                render={props => (
+                                    <RecipeEditor {...props} isEditing={true} />
+                                )}
+                            />
                         )}
-                    />
-                    <Route
-                        path="/upload"
-                        render={props => (
-                            <RecipeEditor {...props} isEditing={false} />
+                        {authenticated && (
+                            <Route
+                                path="/upload"
+                                render={props => (
+                                    <RecipeEditor
+                                        {...props}
+                                        isEditing={false}
+                                    />
+                                )}
+                            />
                         )}
-                    />
-                    <Redirect to="/" />
-                </Switch>
-            </React.Suspense>
-        </CSSTransition>
-    </TransitionGroup>
-));
+                        <Redirect to="/" />
+                    </Switch>
+                </React.Suspense>
+            </CSSTransition>
+        </TransitionGroup>
+    );
+});
 
 const App = props => {
-    console.log('APP IS RENDERING');
+    const dispatch = useDispatch();
+    const authenticated = useSelector(state => state.auth.authenticated);
     const { fetched } = props;
+
     useEffect(() => {
-        props.onTryAutoSignup();
+        dispatch(tryAutoLogin());
         if (!fetched) {
-            props.onFetchRecipes();
+            dispatch(fetchRecipes());
         }
     }, [fetched]);
 
     return (
         <Layout>
-            <AnimatedSwitch />
+            <AnimatedSwitch authenticated={authenticated} />
         </Layout>
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        authenticated: state.auth.authenticated,
-        fetched: state.recipe.fetched,
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onFetchRecipes: () => dispatch(actions.fetchRecipes()),
-        onTryAutoSignup: () => dispatch(actions.tryAutoSignup()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
