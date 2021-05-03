@@ -1,7 +1,6 @@
+import AppRouter from './AppRouter';
 import { withRouter } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
-import AppRouter from './AppRouter';
 
 const AnimatedSwitch = withRouter(({ location }) => {
     return (
@@ -9,9 +8,9 @@ const AnimatedSwitch = withRouter(({ location }) => {
             <CSSTransition
                 key={location.key}
                 classNames="Route"
-                timeout={{ enter: 500, exit: 500 }}
+                timeout={{ enter: 200, exit: 200 }}
             >
-                <AppRouter />
+                <AppRouter location={location} />
             </CSSTransition>
         </TransitionGroup>
     );

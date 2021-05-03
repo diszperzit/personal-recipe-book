@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './RecipeLister.module.css';
 
 import ListElement from '../../components/List/ListElement/ListElement';
-import Button from '../../components/Globals/UI/Button/Button';
+import ButtonList from '../../components/Globals/UI/ButtonList/ButtonList';
 import Checkbox from '../../components/Globals/UI/Checkbox/Checkbox';
 import Search from '../../components/Globals/UI/Search/Search';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
@@ -57,9 +57,9 @@ const RecipeList = props => {
             history.push('/upload');
         }
     };
-    const navigateToView = index => {
+    const navigateToView = useCallback(index => {
         history.push(`/view/${index}`);
-    };
+    }, []);
 
     const toggleAuthModal = () => {
         dispatch(authActions.toggleModal());
@@ -109,23 +109,37 @@ const RecipeList = props => {
         </Checkbox>
     ));
 
-    let authButton = (
-        <Button color="green" clicked={toggleAuthModal} svgName="login">
-            Authenticate
-        </Button>
-    );
-    if (authenticated) {
-        authButton = (
-            <Button color="red" clicked={logoutHandler} svgName="logout">
-                Logout
-            </Button>
-        );
-    }
-
     let listSectionClasses = [styles.RecipeList];
     if (!showListFilters) {
         listSectionClasses.push(styles.FiltersHidden);
     }
+
+    const buttonListConfig = [
+        {
+            type: 'button',
+            color: authenticated ? 'blue' : 'disabled',
+            clicked: navigateToUpload,
+            svgName: 'upload',
+            label: 'Upload new',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: 'orange',
+            clicked: toggleListFilters,
+            svgName: showListFilters ? 'arrow-down' : 'arrow-up',
+            label: showListFilters ? 'Hide filters' : 'Show filters',
+            show: 'mobile',
+        },
+        {
+            type: 'button',
+            color: authenticated ? 'red' : 'green',
+            clicked: authenticated ? logoutHandler : toggleAuthModal,
+            svgName: authenticated ? 'logout' : 'login',
+            label: authenticated ? 'Logout' : 'Authenticate',
+            show: 'all',
+        },
+    ];
 
     return (
         <div className={styles.RecipeListContainer}>
@@ -141,24 +155,7 @@ const RecipeList = props => {
                 </div>
                 <div className={styles.Recipes}>{showedRecipes}</div>
             </section>
-            <div className={styles.RecipeListCTAs}>
-                <Button
-                    color={authenticated ? 'blue' : 'disabled'}
-                    clicked={navigateToUpload}
-                    svgName="upload"
-                >
-                    Upload new
-                </Button>
-                <Button
-                    color="orange"
-                    clicked={toggleListFilters}
-                    svgName={showListFilters ? 'arrow-down' : 'arrow-up'}
-                    show="mobile"
-                >
-                    {showListFilters ? 'Hide filters' : 'Show filters'}
-                </Button>
-                {authButton}
-            </div>
+            <ButtonList config={buttonListConfig}></ButtonList>
         </div>
     );
 };

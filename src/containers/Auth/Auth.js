@@ -4,7 +4,7 @@ import styles from './Auth.module.css';
 
 import Overlay from '../../components/Globals/UI/Overlay/Overlay';
 import Input from '../../components/Globals/UI/Input/Input';
-import Button from '../../components/Globals/UI/Button/Button';
+import Button from '../../components/Globals/UI/ButtonList/Button/Button';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
 
 import { updateObject } from '../../helpers/utility';

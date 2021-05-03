@@ -1,7 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import styles from './RecipeViewer.module.css';
 
-import Button from '../../components/Globals/UI/Button/Button';
+import ButtonList from '../../components/Globals/UI/ButtonList/ButtonList';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
 import RecipeImage from '../../components/View/RecipeImage/RecipeImage';
 import RecipeDifficulty from '../../components/View/RecipeDifficulty/RecipeDifficulty';
@@ -83,42 +83,45 @@ const RecipeViewer = props => {
             );
         }
     }
+    const buttonListConfig = [
+        {
+            type: 'button',
+            color: recipeID !== 1 ? 'red' : 'disabled',
+            clicked: prevRecipeHandler,
+            svgName: 'prev',
+            label: 'Previous',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: 'orange',
+            clicked: backToListHandler,
+            svgName: 'list',
+            label: 'Back to list',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: authenticated ? 'blue' : 'disabled',
+            clicked: editRecipeHandler,
+            svgName: 'pencil',
+            label: 'Edit ',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: recipeID !== recipes.length ? 'green' : 'disabled',
+            clicked: nextRecipeHandler,
+            svgName: 'next',
+            label: 'Next',
+            show: 'all',
+        },
+    ];
+
     return (
         <div className={styles.RecipeViewerContainer}>
             <article className={styles.Recipe}>{recipeText}</article>
-            <div className={styles.RecipeCTAs}>
-                <Button
-                    color={recipeID !== 1 ? 'red' : 'disabled'}
-                    clicked={prevRecipeHandler}
-                    type="button"
-                    svgName="prev"
-                >
-                    Previous
-                </Button>
-                <Button
-                    color="orange"
-                    clicked={backToListHandler}
-                    type="button"
-                    svgName="list"
-                >
-                    Back to list
-                </Button>
-                <Button
-                    color={authenticated ? 'blue' : 'disabled'}
-                    clicked={editRecipeHandler}
-                    svgName="pencil"
-                >
-                    Edit
-                </Button>
-                <Button
-                    color={recipeID !== recipes.length ? 'green' : 'disabled'}
-                    clicked={nextRecipeHandler}
-                    type="button"
-                    svgName="next"
-                >
-                    Next
-                </Button>
-            </div>
+            <ButtonList config={buttonListConfig} />
         </div>
     );
 };

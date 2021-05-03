@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Spinner from '../Globals/UI/Spinner/Spinner';
 
@@ -15,9 +15,10 @@ const RecipeEditor = React.lazy(() =>
 );
 
 const AppRouter = props => {
+    const authenticated = useSelector(state => state.auth.authenticated);
     return (
         <React.Suspense fallback={<Spinner />}>
-            <Switch>
+            <Switch location={props.location}>
                 <Route
                     path="/"
                     exact
@@ -27,7 +28,7 @@ const AppRouter = props => {
                     path="/view/:id"
                     render={props => <RecipeViewer {...props} />}
                 />
-                {props.authenticated && (
+                {authenticated && (
                     <Route
                         path="/edit/:id"
                         render={props => (
@@ -35,7 +36,7 @@ const AppRouter = props => {
                         )}
                     />
                 )}
-                {props.authenticated && (
+                {authenticated && (
                     <Route
                         path="/upload"
                         render={props => (
@@ -49,10 +50,4 @@ const AppRouter = props => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        authenticated: state.auth.authenticated,
-    };
-};
-
-export default connect(mapStateToProps, null)(AppRouter);
+export default AppRouter;

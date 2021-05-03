@@ -93,21 +93,6 @@
     margin: 3rem 0;
 }
 
-.RecipeListCTAs {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: column;
-    text-align: center;
-    position: fixed;
-    bottom: 3.5rem;
-    width: 75vw;
-    left: 12.5vw;
-    height: auto;
-    margin: 0 auto;
-    flex-direction: row;
-}
-
 @media (max-width: 1367px) {
     .RecipeList .Recipes {
         grid-template-columns: repeat(4, 1fr);
@@ -138,10 +123,6 @@
 
     .RecipeList .RecipeListSearch {
         margin: 1.5rem 0 1.2rem;
-    }
-    .RecipeListCTAs {
-        left: 2.5vw;
-        width: 95vw;
     }
 }
 

@@ -113,17 +113,6 @@
     color: #0078da;
 }
 
-.RecipeEditCTAs {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 3.5rem;
-    width: 75vw;
-    left: 12.5vw;
-}
-
 @media (max-width: 1024px) {
     .RecipeEditor {
         grid-template-columns: 1fr;
@@ -148,11 +137,6 @@
     .RecipeEditor .IngredientsInputs,
     .RecipeEditor .StepsInputs {
         padding: 0 2rem;
-    }
-
-    .RecipeEditCTAs {
-        left: 2.5vw;
-        width: 95vw;
     }
 }
 

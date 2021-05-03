@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useHistory, useParams, Prompt } from 'react-router-dom';
 import styles from './RecipeEditor.module.css';
 
 import Input from '../../components/Globals/UI/Input/Input';
-import Button from '../../components/Globals/UI/Button/Button';
+import ButtonList from '../../components/Globals/UI/ButtonList/ButtonList';
 import EditIngredient from '../../components/Edit/EditIngredient/EditIngredient';
 import EditStep from '../../components/Edit/EditStep/EditStep';
 import Spinner from '../../components/Globals/UI/Spinner/Spinner';
@@ -159,25 +159,31 @@ const RecipeEditor = props => {
         isEditing ? recipe.stepCount : 0
     );
 
-    const changeBasicData = (event, inputIdentifier) => {
-        const updatedFormElement = updateObject(basics[inputIdentifier], {
-            value: event.target.value,
-        });
-        const updatedBasics = updateObject(basics, {
-            [inputIdentifier]: updatedFormElement,
-        });
+    const changeBasicData = useCallback(
+        (event, inputIdentifier) => {
+            const updatedFormElement = updateObject(basics[inputIdentifier], {
+                value: event.target.value,
+            });
+            const updatedBasics = updateObject(basics, {
+                [inputIdentifier]: updatedFormElement,
+            });
 
-        setBasics(updatedBasics);
-    };
-    const changeIngredientData = (event, identifier, inputName) => {
-        const updatedIngredient = updateObject(ingredients[identifier], {
-            [inputName]: event.target.value,
-        });
-        const updatedIngredients = updateObject(ingredients, {
-            [identifier]: updatedIngredient,
-        });
-        setIngredients(updatedIngredients);
-    };
+            setBasics(updatedBasics);
+        },
+        [basics]
+    );
+    const changeIngredientData = useCallback(
+        (event, identifier, inputName) => {
+            const updatedIngredient = updateObject(ingredients[identifier], {
+                [inputName]: event.target.value,
+            });
+            const updatedIngredients = updateObject(ingredients, {
+                [identifier]: updatedIngredient,
+            });
+            setIngredients(updatedIngredients);
+        },
+        [ingredients]
+    );
     const incrementIngredientCount = () => {
         const updatedIngredients = ingredients ? { ...ingredients } : [];
         const updatedIngredientCount = ingredientCount + 1;
@@ -201,12 +207,15 @@ const RecipeEditor = props => {
         setIngredients(updatedIngredients);
         setIngredientCount(updatedIngredientCount);
     };
-    const changeStepData = (event, identifier) => {
-        const updatedSteps = updateObject(
-            (steps, { ...steps, [identifier]: event.target.value })
-        );
-        setSteps(updatedSteps);
-    };
+    const changeStepData = useCallback(
+        (event, identifier) => {
+            const updatedSteps = updateObject(
+                (steps, { ...steps, [identifier]: event.target.value })
+            );
+            setSteps(updatedSteps);
+        },
+        [steps]
+    );
     const incrementStepCount = () => {
         const updatedSteps = steps ? { ...steps } : [];
         const updatedStepCount = stepCount + 1;
@@ -312,6 +321,41 @@ const RecipeEditor = props => {
         }
     }
 
+    const buttonListConfig = [
+        {
+            type: 'button',
+            color: isEditing ? 'red' : 'disabled',
+            clicked: deleteRecipeHandler,
+            svgName: 'delete',
+            label: 'Delete recipe',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: 'orange',
+            clicked: backToListHandler,
+            svgName: 'list',
+            label: 'Back to list',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: isEditing ? 'blue' : 'disabled',
+            clicked: viewRecipeHandler,
+            svgName: 'return',
+            label: 'View recipe',
+            show: 'all',
+        },
+        {
+            type: 'button',
+            color: 'green',
+            clicked: uploadRecipeHandler,
+            svgName: 'upload',
+            label: isEditing ? 'Confirm edit' : 'Confirm upload',
+            show: 'all',
+        },
+    ];
+
     let contents = <Spinner />;
     if (fetched) {
         contents = (
@@ -361,40 +405,7 @@ const RecipeEditor = props => {
                         <div className={styles.StepsInputs}>{stepsForm}</div>
                     </div>
                 </form>
-                <div className={styles.RecipeEditCTAs}>
-                    <Button
-                        color={isEditing ? 'red' : 'disabled'}
-                        clicked={deleteRecipeHandler}
-                        type="button"
-                        svgName="delete"
-                    >
-                        Delete recipe
-                    </Button>
-                    <Button
-                        color="orange"
-                        clicked={backToListHandler}
-                        type="button"
-                        svgName="list"
-                    >
-                        Back to list
-                    </Button>
-                    <Button
-                        color={isEditing ? 'blue' : 'disabled'}
-                        clicked={viewRecipeHandler}
-                        type="button"
-                        svgName="return"
-                    >
-                        View recipe
-                    </Button>
-                    <Button
-                        color="green"
-                        clicked={uploadRecipeHandler}
-                        type="button"
-                        svgName="upload"
-                    >
-                        {isEditing ? 'Confirm edit' : 'Confirm upload'}
-                    </Button>
-                </div>
+                <ButtonList config={buttonListConfig} />
             </div>
         );
     }

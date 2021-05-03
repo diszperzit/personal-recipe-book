@@ -34,8 +34,11 @@ Personal Recipe Book is based on React, Redux and create-react-app. It is **pers
 
 ### Roadmap
 
--   Calorie tracking through ingredients
--   Efficiency level
+-   Custom HTTP hook
+-   Custom Form hook with validation
+-   Optimization of re-renders
+-   Prompts when editing
+-   Additional features (Calorie tracking through ingredients, Efficiency level, etc.)
 
 ### License
 
